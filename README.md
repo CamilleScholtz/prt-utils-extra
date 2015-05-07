@@ -2,8 +2,6 @@
 
 Like pkgmk but for dependencies.
 
-![](https://u.teknik.io/ZLDEHO.png)
-
 ## Usage
 
 depmk [options]
@@ -12,7 +10,11 @@ Options:
 
 `-l` List uninstalled dependencies of package.
 
+`-la` List all dependencies.
+
 `-i` Build and install dependencies.
+
+`-do` Do not build, only download missing source file(s).
 
 `-if` Build dependencies without checking footprint.
 
@@ -21,6 +23,8 @@ Options:
 `-um` Update md5sum.
 
 `-im` Build dependencies without checking md5sum.
+
+`-ns` Do not strip executable binaries or libraries.
 
 `-v` Print version and exit.
 
