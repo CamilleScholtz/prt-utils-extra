@@ -1,9 +1,11 @@
 # depmk
+
 Like pkgmk but for dependencies.
 
 ![](https://u.teknik.io/ZLDEHO.png)
 
 ## Usage
+
 depmk [options]
 
 Options:
@@ -23,3 +25,7 @@ Options:
 `-v` Print version and exit.
 
 `-h` Print help and exit.
+
+## Requirements.
+
+* the CRUX pkg tools
