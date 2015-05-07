@@ -22,8 +22,11 @@ info() {
 # This function locates the Pkgfile
 pkgfile() {
 	if ! [[ -f "./Pkgfile" ]]; then
-		# TODO: Add if statement here for $dep/
-		echo "=======> ERROR: File '$dep/Pkgfile' not found."
+		if [[ -z "$dep" ]]; then
+			echo "=======> ERROR: File 'Pkgfile' not found."
+		else
+			echo "=======> ERROR: File '$dep/Pkgfile' not found."
+		fi
 		exit 1
 	else
 		pkgfile="$(cat "./Pkgfile")"
@@ -43,7 +46,11 @@ dependency() {
 	done
 
 	# Check which dependencies are not installed yet
-	notinstalled="$(echo -e "$(echo -e "$installed\n$deps" | sort | uniq -u)\n$deps" | sort | uniq -d)"
+	if [[ "$all" == true ]]; then
+		notinstalled="$(echo "$deps" | sort | uniq -u)"
+	else
+		notinstalled="$(echo -e "$(echo -e "$installed\n$deps" | sort | uniq -u)\n$deps" | sort | uniq -d)"
+	fi
 
 	# Get dependencies of dependencies of depe...
 	for dep in $notinstalled; do
@@ -99,12 +106,15 @@ for flag in "$@"; do
 		-h|--help)
 			echo "usage: depmk [options]"
 			echo "options:"
-			echo "  -l,   --list                List uninstalled dependencies of package"
-			echo "  -i,   --install             Build and install dependencies"
+			echo "  -l,   --list                list uninstalled dependencies"
+			echo "  -la,  --list-all            list all dependencies"
+			echo "  -i,   --install             build and install dependencies"
+			echo "  -do,  --download-only       do not build, only download missing source file(s)"
 			echo "  -if,  --ignore-footprint    build dependencies without checking footprint"
 			echo "  -in,  --ignore-new          build dependencies, ignore new files in a footprint missmatch"
 			echo "  -um,  --update-md5sum       update md5sum"
 			echo "  -im,  --ignore-md5sum       build dependencies without checking md5sum"
+			echo "  -ns,  --no-strip            do not strip executable binaries or libraries"
 			echo "  -v,   --version             print version and exit"
 			echo "  -h,   --help                print help and exit"
 			exit 0
@@ -113,13 +123,24 @@ for flag in "$@"; do
 			info
 			pkgfile
 			dependency
-			exit 0
+			exit
+			;;
+		-la|--list-all)
+			all=true
+
+			info
+			pkgfile
+			dependency
+			exit
 			;;
 		-i|--install)
 			options="$options -i"
 			;;
 		-if|--ignore-footprint)
 			options="$options -if"
+			;;
+		-do|--download-only)
+			options="$options -do"
 			;;
 		-in|--ingore-new)
 			options="$options -in"
@@ -130,8 +151,11 @@ for flag in "$@"; do
 		-im|--ingore-md5sum)
 			options="$options -im"
 			;;
+		-ns|--no-strip)
+			option="$options -ns"
+			;;
 		-v|--version)
-			echo "depmk 0.03"
+			echo "depmk 0.04"
 			exit 0
 			;;
 		*)
@@ -143,5 +167,12 @@ done
 
 info
 pkgfile
+
 installme="$(dependency | tac)"
-install
+
+if [[ -n "$installme" ]]; then
+	install
+else
+	echo "=======> INFO: No dependencies to install."
+	exit 0
+fi
