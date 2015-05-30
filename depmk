@@ -6,83 +6,10 @@
 ## CONFIGURATION
 
 # Config directory location
-config="/etc/depmk.conf"
+config="/etc/mk.conf"
+
 
 ## FUNCTIONS
-
-# This function gets some basic info
-info() {
-	ports="$(ports -l)"
-	installed="$(pkginfo -i | cut -d " " -f 1)"
-
-	order="$(grep "^order " "$config" | cut -d " " -f 2-)"
-	alias="$(grep "^alias " "$config" | cut -d " " -f 2-)"
-}
-
-# This function locates the Pkgfile
-pkgfile() {
-	if ! [[ -f "./Pkgfile" ]]; then
-		if [[ -z "$dep" ]]; then
-			echo "=======> ERROR: File 'Pkgfile' not found."
-		else
-			echo "=======> ERROR: File '$dep/Pkgfile' not found."
-		fi
-		exit 1
-	else
-		pkgfile="$(cat "./Pkgfile")"
-	fi
-}
-
-# This function calculates the dependencies
-dependency() {
-	deps="$(echo "$pkgfile" | grep "^# Depends on:" | sed "s/# Depends on: *//g" | tr -d "," | tr " " "\n")"
-
-	# Alias
-	for line in $alias; do
-		original="$(echo "$line" | cut -d "=" -f 1)"
-		aliased="$(echo "$line" | cut -d "=" -f 2)"
-
-		deps="$(echo "$deps" | sed "s/^$original$/$aliased/g")"
-	done
-
-	# Check which dependencies are not installed yet
-	if [[ "$all" == true ]]; then
-		notinstalled="$(echo "$deps" | sort | uniq -u)"
-	else
-		notinstalled="$(echo -e "$(echo -e "$installed\n$deps" | sort | uniq -u)\n$deps" | sort | uniq -d)"
-	fi
-
-	# Get dependencies of dependencies of depe...
-	for dep in $notinstalled; do
-		# Check if in $checked
-		if [[ -n "$(echo "$checked" | grep " $dep ")" ]]; then
-			continue
-		else
-			checked="$checked $dep "
-		fi
-
-		# Get dependency location
-		location="$(echo "$ports" | grep "/$dep$")"
-
-		# Order
-		if [[ "$(echo "$location" | wc -l)" -ge 2 ]]; then
-			for line in $order; do
-				locationorder="$(echo "$location" | grep "^$line/")"
-				if [[ -n "$locationorder" ]]; then
-					location="$locationorder"
-					break
-				fi
-			done
-		fi
-
-		echo "$location"
-
-		# cd to $dep location and repeat pkgfile/dependency process
-		cd "/usr/ports/$location"
-		pkgfile
-		dependency
-	done
-}
 
 # This function installs the dependencies
 install() {
@@ -104,58 +31,39 @@ install() {
 for flag in "$@"; do
 	case "$flag" in
 		-h|--help)
-			echo "usage: depmk [options]"
+			echo "Usage: depmk [options]"
+			echo ""
 			echo "options:"
-			echo "  -l,   --list                list uninstalled dependencies"
-			echo "  -la,  --list-all            list all dependencies"
-			echo "  -i,   --install             build and install dependencies"
-			echo "  -do,  --download-only       do not build, only download missing source file(s)"
-			echo "  -if,  --ignore-footprint    build dependencies without checking footprint"
-			echo "  -in,  --ignore-new          build dependencies, ignore new files in a footprint missmatch"
-			echo "  -um,  --update-md5sum       update md5sum"
-			echo "  -im,  --ignore-md5sum       build dependencies without checking md5sum"
-			echo "  -ns,  --no-strip            do not strip executable binaries or libraries"
-			echo "  -v,   --version             print version and exit"
-			echo "  -h,   --help                print help and exit"
+			echo "  -i,   --install         build and install dependencies"
+			echo "  -do,  --download-only   do not build, only download missing source file(s)"
+			echo "  -if,  --ignore-fp       build dependencies without checking footprint"
+			echo "  -in,  --ignore-new      build dependencies, ignore [NEW] footprint missmatches"
+			echo "  -im,  --ignore-md       build dependencies without checking md5sum"
+			echo "  -ns,  --no-strip        do not strip executable binaries or libraries"
+			echo "  -v,   --version         print version and exit"
+			echo "  -h,   --help            print help and exit"
 			exit 0
 			;;
-		-l|--list)
-			info
-			pkgfile
-			dependency
-			exit
-			;;
-		-la|--list-all)
-			all=true
-
-			info
-			pkgfile
-			dependency
-			exit
-			;;
 		-i|--install)
-			options="$options -i"
-			;;
-		-if|--ignore-footprint)
-			options="$options -if"
+			options+=" -i"
 			;;
 		-do|--download-only)
-			options="$options -do"
+			options+=" -do"
+			;;
+		-if|--ignore-fp)
+			options+=" -if"
 			;;
 		-in|--ingore-new)
-			options="$options -in"
+			options+=" -in"
 			;;
-		-um|--update-md5sum)
-			options="$options -um"
-			;;
-		-im|--ingore-md5sum)
-			options="$options -im"
+		-im|--ingore-md5)
+			options+=" -im"
 			;;
 		-ns|--no-strip)
-			option="$options -ns"
+			option+=" -ns"
 			;;
 		-v|--version)
-			echo "depmk 0.04"
+			echo "depmk 0.06"
 			exit 0
 			;;
 		*)
@@ -165,10 +73,7 @@ for flag in "$@"; do
 	esac
 done
 
-info
-pkgfile
-
-installme="$(dependency | tac)"
+installme="$(depls | tac)"
 
 if [[ -n "$installme" ]]; then
 	install
