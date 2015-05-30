@@ -63,7 +63,7 @@ for flag in "$@"; do
 			option+=" -ns"
 			;;
 		-v|--version)
-			echo "depmk 0.06"
+			echo "depmk 0.05"
 			exit 0
 			;;
 		*)

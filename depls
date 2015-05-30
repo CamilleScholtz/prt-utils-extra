@@ -113,7 +113,7 @@ for flag in "$@"; do
 			exit
 			;;
 		-v|--version)
-			echo "depls 0.01"
+			echo "depls 0.05"
 			exit 0
 			;;
 		*)
