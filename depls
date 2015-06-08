@@ -5,7 +5,7 @@
 
 ## CONFIGURATION
 
-# Config directory location
+# Config location
 config="/etc/mk.conf"
 
 
@@ -23,7 +23,11 @@ info() {
 # This function reads the Pkgfile
 pkgfile() {
 	if ! [[ -f "./Pkgfile" ]]; then
-		echo "=======> ERROR: File 'Pkgfile' not found."
+		if [[ -z "$dep" ]]; then
+			echo "=======> ERROR: File 'Pkgfile' not found."
+		else
+			echo "=======> ERROR: Dependency '$dep' not found."
+		fi
 		exit 1
 	else
 		pkgfile="$(cat "./Pkgfile")"
@@ -54,6 +58,7 @@ location() {
 	for dep in $nolocation; do
 		# Check if in $checked
 		if [[ -n "$(echo "$checked" | grep " $dep ")" ]]; then
+			#spacecount=0
 			continue
 		else
 			checked="$checked $dep "
@@ -74,21 +79,14 @@ location() {
 			done
 		fi
 
-		alllocation="$alllocation $location"
-	done
-}
+		echo "$location"
 
-# This function calculates the dependencies of dependencies of depe...
-dependency() {
-	for dep in $alllocation; do
-		echo "$dep"
-
-		cd "/usr/ports/$dep"
+		# cd to $dep location and repeat pkgfile/location process
+		cd "/usr/ports/$location"
 		pkgfile
 		location
 	done
 }
-
 
 ## EXECUTE
 
@@ -109,11 +107,10 @@ for flag in "$@"; do
 			info
 			pkgfile
 			location
-			dependency
 			exit
 			;;
 		-v|--version)
-			echo "depls (mk) 0.6.1"
+			echo "depls (mk) 0.6.2"
 			exit 0
 			;;
 		*)
@@ -126,4 +123,3 @@ done
 info
 pkgfile
 location
-dependency

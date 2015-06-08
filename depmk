@@ -3,6 +3,8 @@
 # depmk - Like pkgmk but for dependencies
 # onodera, https://github.com/onodera-punpun
 
+# TODO: Add post-install support
+
 ## CONFIGURATION
 
 # Config directory location
@@ -63,7 +65,7 @@ for flag in "$@"; do
 			option+=" -ns"
 			;;
 		-v|--version)
-			echo "depmk (mk) 0.6.1"
+			echo "depmk (mk) 0.6.2"
 			exit 0
 			;;
 		*)
