@@ -13,11 +13,11 @@ config="/etc/mk.conf"
 
 # This function gets some basic info
 info() {
-	ports="$(ports -l)"
-	installed="$(pkginfo -i | cut -d " " -f 1)"
-
 	order="$(grep "^order" "$config" | cut -d " " -f 2-)"
 	alias="$(grep "^alias" "$config" | cut -d " " -f 2-)"
+
+	ports="$(ports -l)"
+	installed="$(pkginfo -i | cut -d " " -f 1)"
 }
 
 # This function reads the Pkgfile

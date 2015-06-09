@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# prtpatch - Patches ports
+# onodera, https://github.com/onodera-punpun
+
+## CONFIGURATION
+
+# Config location
+config="/etc/mk.conf"
+
+
+## EXECUTE
+
+for flag in "$@"; do
+	case "$flag" in
+		-h|--help)
+			echo "Usage: prtpatch [options]"
+			echo ""
+			echo "options:"
+			echo "  -v,   --version         print version and exit"
+			echo "  -h,   --help            print help and exit"
+			exit 0
+			;;
+		-v|--version)
+			echo "prtpatch (mk) 0.6.2"
+			exit 0
+			;;
+		*)
+			echo "prtpatch: invalid option $1"
+			exit 1
+			;;
+	esac
+done
+
+prtpatchdir="$(grep "^prtpatch" "$config" | cut -d " " -f 2-)"
+patches="$(find "$prtpatchdir/" -type f -name "*.patch")"
+
+for patch in $patches; do
+	repo="$(echo "$patch" | rev | cut -d "/" -f 3 | rev)"
+	port="$(echo "$patch" | rev | cut -d "/" -f 2 | rev)"
+	file="$(echo "$patch" | rev | cut -d "/" -f 1 | rev | cut -d "." -f 1)"
+
+	echo "=======> Patching '/usr/ports/$repo/$port/$file'"
+	patch -s "/usr/ports/$repo/$port/$file" < "$patch"
+done
+

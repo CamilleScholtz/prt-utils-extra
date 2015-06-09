@@ -39,3 +39,17 @@ Options:
 `-v` Print version and exit.
 
 `-h` Print help and exit.
+
+# prtpatch
+
+Patches ports.
+
+## Usage
+
+prtpatch [options]
+
+Options:
+
+`-v` Print version and exit.
+
+`-h` Print help and exit.
