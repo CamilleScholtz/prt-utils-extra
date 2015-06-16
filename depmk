@@ -46,6 +46,10 @@ for flag in "$@"; do
 			echo "  -h,   --help            print help and exit"
 			exit 0
 			;;
+		-v|--version)
+			echo "depmk (mk) 0.6.3"
+			exit 0
+			;;
 		-i|--install)
 			options+=" -i"
 			;;
@@ -63,10 +67,6 @@ for flag in "$@"; do
 			;;
 		-ns|--no-strip)
 			option+=" -ns"
-			;;
-		-v|--version)
-			echo "depmk (mk) 0.6.2"
-			exit 0
 			;;
 		*)
 			echo "depmk: invalid option $1"

@@ -101,6 +101,10 @@ for flag in "$@"; do
 			echo "  -h,   --help            print help and exit"
 			exit 0
 			;;
+		-v|--version)
+			echo "depls (mk) 0.6.3"
+			exit 0
+			;;
 		-a|--all)
 			all=true
 
@@ -108,10 +112,6 @@ for flag in "$@"; do
 			pkgfile
 			location
 			exit
-			;;
-		-v|--version)
-			echo "depls (mk) 0.6.2"
-			exit 0
 			;;
 		*)
 			echo "depls: invalid option $1"
