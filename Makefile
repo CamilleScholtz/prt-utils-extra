@@ -9,6 +9,7 @@ all:
 
 install:
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/bin
+	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/etc
 	$(INSTALL_PROG) depls $(DESTDIR)$(PREFIX)/bin/depls
 	$(INSTALL_PROG) depmk $(DESTDIR)$(PREFIX)/bin/depmk
 	$(INSTALL_PROG) prtpatch $(DESTDIR)$(PREFIX)/bin/prtpatch
