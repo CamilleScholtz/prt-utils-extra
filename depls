@@ -6,7 +6,7 @@
 ## CONFIGURATION
 
 # Config location
-config="/etc/mk.conf"
+config="/etc/prt.conf"
 
 
 ## FUNCTIONS
@@ -90,8 +90,8 @@ location() {
 
 ## EXECUTE
 
-for flag in "$@"; do
-	case "$flag" in
+if [[ $# -eq 1 ]]; then
+	case "$1" in
 		-h|--help)
 			echo "Usage: depls [options]"
 			echo ""
@@ -107,18 +107,13 @@ for flag in "$@"; do
 			;;
 		-a|--all)
 			all=true
-
-			info
-			pkgfile
-			location
-			exit
 			;;
 		*)
 			echo "depls: invalid option $1"
 			exit 1
 			;;
 	esac
-done
+fi
 
 info
 pkgfile

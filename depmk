@@ -8,7 +8,7 @@
 ## CONFIGURATION
 
 # Config directory location
-config="/etc/mk.conf"
+config="/etc/prt.conf"
 
 
 ## FUNCTIONS

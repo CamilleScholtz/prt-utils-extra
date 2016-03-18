@@ -6,7 +6,7 @@
 ## CONFIGURATION
 
 # Config location
-config="/etc/mk.conf"
+config="/etc/prt.conf"
 
 
 ## EXECUTE
