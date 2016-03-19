@@ -22,7 +22,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "prtpatch (prt-utils-extra) 0.7.3"
+			echo "prtpatch (prt-utils-extra) 0.7.4"
 			exit 0
 			;;
 		*)
@@ -39,10 +39,8 @@ for patch in $patches; do
 	repo="$(echo "$patch" | rev | cut -d "/" -f 3 | rev)"
 	port="$(echo "$patch" | rev | cut -d "/" -f 2 | rev)"
 	file="$(echo "$patch" | rev | cut -d "/" -f 1 | rev | cut -d "." -f 1)"
-	desc="$(cat "$prtpatchdir/$repo/$port/description")"
 
 	echo "=======> Patching '/usr/ports/$repo/$port/$file'"
-	echo "$desc"
 	patch -s "/usr/ports/$repo/$port/$file" < "$patch"
 done
 
