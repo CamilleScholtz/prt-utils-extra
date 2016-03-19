@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # depls - List dependencies
 # onodera, https://github.com/onodera-punpun
@@ -22,8 +22,8 @@ info() {
 
 # This function reads the Pkgfile
 pkgfile() {
-	if ! [[ -f "./Pkgfile" ]]; then
-		if [[ -z "$dep" ]]; then
+	if ! [ -f "./Pkgfile" ]; then
+		if [ -z "$dep" ]; then
 			echo "=======> ERROR: File 'Pkgfile' not found."
 		else
 			echo "=======> ERROR: Dependency '$dep' not found."
@@ -48,7 +48,7 @@ location() {
 	done
 
 	# Check which dependencies are not installed yet
-	if [[ "$all" == true ]]; then
+	if [ "$all" = "true" ]; then
 		nolocation="$deps"
 	else
 		nolocation="$(echo -e "$(echo -e "$installed\n$deps" | sort | uniq -u)\n$deps" | sort | uniq -d)"
@@ -57,7 +57,7 @@ location() {
 	# Get location of dependencies
 	for dep in $nolocation; do
 		# Check if in $checked
-		if [[ -n "$(echo "$checked" | grep " $dep ")" ]]; then
+		if [ -n "$(echo "$checked" | grep " $dep ")" ]; then
 			#spacecount=0
 			continue
 		else
@@ -69,10 +69,10 @@ location() {
 
 		# Order
 		# TODO: Find a better way of doing this?
-		if [[ "$(echo "$location" | wc -l)" -ge 2 ]]; then
+		if [ "$(echo "$location" | wc -l)" -ge 2 ]; then
 			for line in $order; do
 				locationorder="$(echo "$location" | grep "^$line/")"
-				if [[ -n "$locationorder" ]]; then
+				if [ -n "$locationorder" ]; then
 					location="$locationorder"
 					break
 			fi
@@ -90,7 +90,7 @@ location() {
 
 ## EXECUTE
 
-if [[ $# -eq 1 ]]; then
+if [ $# -eq 1 ]; then
 	case "$1" in
 		-h|--help)
 			echo "Usage: depls [options]"
@@ -102,7 +102,7 @@ if [[ $# -eq 1 ]]; then
 			exit 0
 			;;
 		-v|--version)
-			echo "depls (mk) 0.6.3"
+			echo "depls (prt-utils-extra) 0.7.3"
 			exit 0
 			;;
 		-a|--all)

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # prtpatch - Patches ports
 # onodera, https://github.com/onodera-punpun
@@ -22,7 +22,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "prtpatch (mk) 0.6.3"
+			echo "prtpatch (prt-utils-extra) 0.7.3"
 			exit 0
 			;;
 		*)
