@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# prtl - Prints port location
+# onodera, https://github.com/onodera-punpun
+
+## CONFIGURATION
+
+# Config location
+config="/etc/prt.conf"
+
+
+## EXECUTE
+
+if [ $? -eq 0 ]; then
+	echo "prtl: please specify a port."
+	exit 1
+fi
+
+for flag in "$@"; do
+	case "$flag" in
+		-h|--help)
+			echo "Usage: prtl [options] [query]"
+			echo ""
+			echo "options:"
+			echo "  -v,   --version         print version and exit"
+			echo "  -h,   --help            print help and exit"
+			exit 0
+			;;
+		-v|--version)
+			echo "prtl (prt-utils-extra) 0.7.4"
+			exit 0
+			;;
+		*)
+			location="$(ports -l | grep "/$@$")"
+
+			# Order
+			# TODO: Find a better way of doing this?
+			if [ "$(echo "$location" | wc -l)" -ge 2 ]; then
+				for line in $order; do
+					echo a
+					locationorder="$(echo "$location" | grep "^$line/")"
+					if [ -n "$locationorder" ]; then
+						location="$locationorder"
+						echo "$location"
+						break
+					fi
+				done
+			fi
+
+			if [ -d "/usr/ports/$location" -a -n "$location" ]; then
+				echo "/usr/ports/$location"
+			else
+				echo "prtl: invalid port $1"
+				exit 1
+			fi
+			;;
+	esac
+done

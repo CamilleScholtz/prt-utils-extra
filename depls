@@ -101,8 +101,8 @@ loop() {
 
 ## EXECUTE
 
-if [ $# -eq 1 ]; then
-	case "$1" in
+for flag in "$@"; do
+	case "$flag" in
 		-h|--help)
 			echo "Usage: depls [options]"
 			echo ""
@@ -124,7 +124,7 @@ if [ $# -eq 1 ]; then
 			exit 1
 			;;
 	esac
-fi
+done
 
 info
 pkgfile

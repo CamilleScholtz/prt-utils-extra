@@ -14,6 +14,7 @@ Options:
 
 `-h` Print help and exit.
 
+
 # depmk
 
 Like pkgmk but for dependencies.
@@ -40,6 +41,7 @@ Options:
 
 `-h` Print help and exit.
 
+
 # prtpatch
 
 Patches ports.
@@ -47,6 +49,21 @@ Patches ports.
 ## Usage
 
 prtpatch [options]
+
+Options:
+
+`-v` Print version and exit.
+
+`-h` Print help and exit.
+
+
+# prtl
+
+Prints port location
+
+## Usage
+
+prtl [options] [port]
 
 Options:
 
