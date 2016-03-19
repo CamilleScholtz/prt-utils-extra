@@ -11,8 +11,8 @@ config="/etc/prt.conf"
 
 ## EXECUTE
 
-if [ $? -eq 0 ]; then
-	echo "prtl: please specify a port."
+if [ $# -eq 0 ]; then
+	echo "prtl: please specify a port"
 	exit 1
 fi
 
