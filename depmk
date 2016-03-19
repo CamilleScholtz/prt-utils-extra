@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # depmk - Like pkgmk but for dependencies
 # onodera, https://github.com/onodera-punpun
@@ -21,7 +21,7 @@ install() {
 
 		# Install dependency
 		pkgmk -d $options
-		if [[ "$?" -ge 1 ]]; then
+		if [ "$?" -ge 1 ]; then
 			exit 1
 		fi
 	done
@@ -47,7 +47,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "depmk (mk) 0.6.3"
+			echo "depmk (prt-utils-extra) 0.7.3"
 			exit 0
 			;;
 		-i|--install)
@@ -77,7 +77,7 @@ done
 
 installme="$(depls | tac)"
 
-if [[ -n "$installme" ]]; then
+if [ -n "$installme" ]; then
 	install
 else
 	echo "=======> INFO: No dependencies to install."
