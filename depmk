@@ -51,22 +51,22 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-i|--install)
-			options+=" -i"
+			options="$options -i"
 			;;
 		-do|--download-only)
-			options+=" -do"
+			options="$options -do"
 			;;
 		-if|--ignore-fp)
-			options+=" -if"
+			options="$options -if"
 			;;
 		-in|--ingore-new)
-			options+=" -in"
+			options="$options -in"
 			;;
 		-im|--ingore-md5)
-			options+=" -im"
+			options="$options -im"
 			;;
 		-ns|--no-strip)
-			option+=" -ns"
+			option="$options -ns"
 			;;
 		*)
 			echo "depmk: invalid option $1"
