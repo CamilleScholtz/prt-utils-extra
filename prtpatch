@@ -40,7 +40,11 @@ for patch in $patches; do
 	port="$(echo "$patch" | rev | cut -d "/" -f 2 | rev)"
 	file="$(echo "$patch" | rev | cut -d "/" -f 1 | rev | cut -d "." -f 1)"
 
-	echo "=======> Patching '/usr/ports/$repo/$port/$file'"
-	patch -s "/usr/ports/$repo/$port/$file" < "$patch"
+	echo "=======> Patching '/usr/ports/$repo/$port/$file'."
+	patch -N --verbose "/usr/ports/$repo/$port/$file" < "$patch"
+	if [ $? -eq 0 ]; then
+		echo "=======> Patching '/usr/ports/$repo/$port/$file' succeeded."
+	else
+		echo "=======> ERROR: Patching '/usr/ports/$repo/$port/$file' failed."
+	fi
 done
-

@@ -13,6 +13,11 @@ config="/etc/prt.conf"
 
 ## FUNCTIONS
 
+# This function gets some basic info
+info() {
+	makecommand="$(grep "^makecommand" "$config" | cut -d " " -f 2-)"
+}
+
 # This function installs the dependencies
 install() {
 	for location in $installme; do
@@ -20,7 +25,7 @@ install() {
 		cd "/usr/ports/$location"
 
 		# Install dependency
-		pkgmk -d $options
+		eval "$makecommand" -d "$options"
 		if [ "$?" -ge 1 ]; then
 			exit 1
 		fi
@@ -78,8 +83,9 @@ done
 installme="$(depls | tac)"
 
 if [ -n "$installme" ]; then
+	info
 	install
 else
-	echo "=======> INFO: No dependencies to install."
+	echo "=======> WARNING: No dependencies to install."
 	exit 0
 fi
