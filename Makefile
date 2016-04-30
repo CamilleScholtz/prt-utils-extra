@@ -14,6 +14,7 @@ install:
 	$(INSTALL_PROG) depmk $(DESTDIR)$(PREFIX)/bin/depmk
 	$(INSTALL_PROG) prtpatch $(DESTDIR)$(PREFIX)/bin/prtpatch
 	$(INSTALL_PROG) prtl $(DESTDIR)$(PREFIX)/bin/prtl
+	$(INSTALL_PROG) prtl $(DESTDIR)$(PREFIX)/bin/prtp
 	$(INSTALL_FILE) config/prt.conf $(DESTDIR)/etc/prt.conf
 
 uninstall:
@@ -21,4 +22,5 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/bin/depmk
 	$(RM) $(DESTDIR)$(PREFIX)/bin/prtpatch
 	$(RM) $(DESTDIR)$(PREFIX)/bin/prtl
+	$(RM) $(DESTDIR)$(PREFIX)/bin/prtp
 	$(RM) $(DESTDIR)/etc/prt.conf
