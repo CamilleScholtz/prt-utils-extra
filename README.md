@@ -1,6 +1,6 @@
 # depls
 
-List dependencies.
+List dependencies recursively.
 
 ## Usage
 

@@ -61,7 +61,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "prtl (prt-utils-extra) 0.7.5"
+			echo "prtl (prt-utils-extra) 0.7.6"
 			exit 0
 			;;
 		*)

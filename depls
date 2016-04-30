@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# depls - List dependencies
+# depls - List dependencies recursively
 # onodera, https://github.com/onodera-punpun
 
 ## CONFIGURATION
@@ -113,7 +113,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "depls (prt-utils-extra) 0.7.5"
+			echo "depls (prt-utils-extra) 0.7.6"
 			exit 0
 			;;
 		-a|--all)

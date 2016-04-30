@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# prtp - Prints port information
+# onodera, https://github.com/onodera-punpun
+
+## FUNCTIONS
+
+# This function reads the Pkgfile
+pkgfile() {
+	if ! [ -f "./Pkgfile" ]; then
+		echo "=======> ERROR: File 'Pkgfile' not found."
+		exit 1
+	else
+		pkgfile="$(cat "./Pkgfile")"
+	fi
+}
+
+
+## EXECUTE
+
+if [ "$#" -ge 1 ]; then
+	for flag in "$@"; do
+		case "$flag" in
+			-h|--help)
+				echo "Usage: prtp [options]"
+				echo ""
+				echo "options:"
+				echo "  -d,   --description     print description"
+				echo "  -u,   --url             print url"
+				echo "  -m,   --maintainer      print maintainer"
+				echo "  -d,   --depends         print dependencies (not recursive)"
+				echo "  -o,   --optional        print optional dependencies (not recursive)"
+				echo "  -v,   --version         print version and exit"
+				echo "  -h,   --help            print help and exit"
+				exit 0
+				;;
+			-v|--version)
+				echo "prtp (prt-utils-extra) 0.7.6"
+				exit 0
+				;;
+			-d|--description)
+				pkgfile
+				echo Description: "$(echo "$pkgfile" | grep "^# Description:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+				;;
+			-u|--url)
+				pkgfile
+				echo URL: "$(echo "$pkgfile" | grep "^# URL:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+				;;
+			-m|--maintainer)
+				pkgfile
+				echo Maintainer: "$(echo "$pkgfile" | grep "^# Maintainer:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+				;;
+			-d|--depends)
+				pkgfile
+				echo Depends on: "$(echo "$pkgfile" | grep "^# Depends on:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+				;;
+			-o|--optional)
+				pkgfile
+				echo Nice to have: "$(echo "$pkgfile" | grep "^# Nice to have:\|^# Optional:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+				;;
+			*)
+				echo "prtp: invalid option $1"
+				exit 1
+				;;
+		esac
+	done
+else
+	pkgfile
+	echo Description: "$(echo "$pkgfile" | grep "^# Description:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+	echo URL: "$(echo "$pkgfile" | grep "^# URL:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+	echo Maintainer: "$(echo "$pkgfile" | grep "^# Maintainer:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+	echo Depends on: "$(echo "$pkgfile" | grep "^# Depends on:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+	echo Nice to have: "$(echo "$pkgfile" | grep "^# Nice to have:\|^# Optional:" | cut -d ":" -f 2- | sed -e "s/^[ \t]*//")"
+fi

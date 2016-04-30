@@ -52,7 +52,7 @@ for flag in "$@"; do
 			exit 0
 			;;
 		-v|--version)
-			echo "depmk (prt-utils-extra) 0.7.5"
+			echo "depmk (prt-utils-extra) 0.7.6"
 			exit 0
 			;;
 		-i|--install)
